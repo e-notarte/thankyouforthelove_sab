@@ -3,446 +3,153 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank you Sab</title>
 
-<title>Letting You Go ❤️</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
 
 body{
-background:linear-gradient(135deg,#ffe4ec,#fff1f5,#fdf2f8);
-overflow:hidden;
-height:100vh;
+  margin:0;
+  background:linear-gradient(135deg,#dfffe2,#f0fff4,#e6fff0);
+  overflow:hidden
 }
 
-.page{
-display:none;
-width:100%;
-height:100vh;
-justify-content:center;
-align-items:center;
-}
-
-.active{
-display:flex;
-}
+.page{display:none;height:100vh;align-items:center;justify-content:center;padding:20px}
+.active{display:flex}
 
 .card{
-width:90%;
-max-width:700px;
-padding:40px;
-text-align:center;
-
-background:rgba(255,255,255,.75);
-backdrop-filter:blur(15px);
-
-border-radius:30px;
-
-box-shadow:
-0 20px 40px rgba(255,122,162,.15);
+  max-width:800px;
+  width:95%;
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(12px);
+  padding:40px;
+  border-radius:30px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(120,200,150,.15)
 }
 
-h1{
-color:#ff7aa2;
-margin-bottom:20px;
-}
+h1{color:#4caf7d}
 
-p{
-color:#6b4e57;
-line-height:1.8;
-}
+p{color:#4d6b57;line-height:1.8}
 
 button{
-padding:14px 35px;
-border:none;
-border-radius:50px;
-cursor:pointer;
-font-size:16px;
-font-weight:600;
-margin:10px;
-transition:.3s;
-}
-
-.primary{
-background:#ff7aa2;
-color:white;
-}
-
-.primary:hover{
-transform:translateY(-3px);
-box-shadow:0 10px 25px rgba(255,122,162,.3);
+  padding:14px 28px;
+  border:none;
+  border-radius:999px;
+  background:#7fd8a6;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  margin:8px;
 }
 
 .leave{
-background:#ffc2d1;
-color:white;
-position:absolute;
+  position:absolute;
+  background:#a8e6b1;
 }
 
-.letter{
-text-align:left;
-line-height:2;
-margin-top:20px;
+.music{position:fixed;top:15px;right:15px;z-index:1000}
+
+.letter{text-align:left;max-height:45vh;overflow:auto}
+
+.petal{position:fixed;top:-20px;animation:fall linear forwards}
+
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(360deg)}
 }
 
 .heart{
-position:fixed;
-font-size:30px;
-animation:floatUp 5s linear forwards;
-pointer-events:none;
+  position:fixed;
+  left:50%;
+  bottom:50px;
+  font-size:90px;
+  transform:translateX(-50%);
+  animation:heartFloat 6s ease-out forwards;
+  z-index:9999;
 }
 
-@keyframes floatUp{
-0%{
-transform:translateY(0);
-opacity:1;
-}
-100%{
-transform:translateY(-500px);
-opacity:0;
-}
+@keyframes heartFloat{
+0%{opacity:1;transform:translateX(-50%) translateY(0)}
+100%{opacity:0;transform:translateX(-50%) translateY(-800px) scale(1.5)}
 }
 
-.petal{
-position:fixed;
-top:-20px;
-font-size:18px;
-animation:fall linear infinite;
-opacity:.8;
-}
+.fadeout{animation:fadeout 5s forwards}
 
-@keyframes fall{
-0%{
-transform:translateY(-50px) rotate(0deg);
-}
-100%{
-transform:translateY(110vh) rotate(360deg);
-}
-}
+@keyframes fadeout{to{background:#000;color:#fff}}
 
-.typing{
-overflow:hidden;
-white-space:nowrap;
-border-right:3px solid #ff7aa2;
-animation:typing 4s steps(40,end), blink .8s infinite;
-}
-
-@keyframes typing{
-from{width:0}
-to{width:100%}
-}
-
-@keyframes blink{
-50%{
-border-color:transparent;
-}
-}
-
-.checklist{
-text-align:left;
-margin:20px auto;
-width:fit-content;
-}
-
-.checklist div{
-margin:12px 0;
-font-size:18px;
-}
-
+.final{font-size:28px;color:white}
 </style>
 </head>
-
 <body>
 
-<div id="petals"></div>
+<button class="music" onclick="toggleMusic()">🎵 Music</button>
 
-<!-- PAGE 1 -->
-<div class="page active" id="page1">
+<audio id="bgMusic" loop>
+<source src="music/Maki-Saan.mp3" type="audio/mpeg">
+</audio>
+
+<div class="page active" id="p1">
 <div class="card">
-
-<h1>One Last Thing... ❤️</h1>
-
-<p>
-Before you go,
-can you stay for just a little longer?
-</p>
-
-<br>
-
-<button class="primary" onclick="nextPage(2)">
-Stay
-</button>
-
-<button class="leave" id="leaveBtn">
-Leave
-</button>
-
+<h1>One Last Thing...</h1>
+<p>Before you leave, can you stay a little longer?</p>
+<button onclick="startJourney()">Stay</button>
+<button class="leave" id="leaveBtn">Leave</button>
 </div>
 </div>
 
-<!-- PAGE 2 -->
-<div class="page" id="page2">
-<div class="card">
+<div class="page" id="p2"><div class="card"><h1>You Stayed ❤️</h1><p>Thank you for staying a little longer.</p><button onclick="go(3)">Next</button></div></div>
 
-<h1>You Stayed ❤️</h1>
+<div class="page" id="p3"><div class="card"><h1>Things I Never Said</h1><p id="type"></p><button onclick="go(4)">Next</button></div></div>
 
-<p>
-Thank you for staying a little longer.
-</p>
+<div class="page" id="p4"><div class="card"><h1>If I Could Choose Again...</h1><p>☑ Meet you again<br>☑ Love you again<br>☑ Make memories again</p><button onclick="go(5)">Next</button></div></div>
 
-<br>
+<div class="page" id="p5"><div class="card"><h1>Maybe...</h1><p>Some people stay forever. Some people become lessons.</p><button onclick="go(6)">Next</button></div></div>
 
-<div style="font-size:60px;">
-💖 💕 💖
-</div>
+<div class="page" id="p6"><div class="card"><h1>It's Time</h1><p>Maybe it's finally time to let you go.</p><button onclick="go(7)">Open Letter</button></div></div>
 
-<button class="primary" onclick="nextPage(3)">
-Next
-</button>
-
-</div>
-</div>
-
-<!-- PAGE 3 -->
-<div class="page" id="page3">
-<div class="card">
-
-<h1>There Are Things I Wanted To Say</h1>
-
-<p class="typing">
-Thank you for the memories...
-</p>
-
-<br><br>
-
-<p>
-Thank you for the laughter.<br>
-Thank you for the moments.<br>
-Thank you for being part of my life.
-</p>
-
-<br>
-
-<button class="primary" onclick="nextPage(4)">
-Next
-</button>
-
-</div>
-</div>
-
-<!-- PAGE 4 -->
-<div class="page" id="page4">
-<div class="card">
-
-<h1>If I Could Choose Again...</h1>
-
-<div class="checklist">
-<div>☑ Meet you again</div>
-<div>☑ Love you again</div>
-<div>☑ Create memories again</div>
-<div>☑ But maybe this time...</div>
-</div>
-
-<button class="primary" onclick="nextPage(5)">
-Next
-</button>
-
-</div>
-</div>
-
-<!-- PAGE 5 -->
-<div class="page" id="page5">
-<div class="card">
-
-<h1>Maybe...</h1>
-
-<p>
-Some people are meant to stay.<br><br>
-
-Some people are meant to teach us something.<br><br>
-
-And maybe that's enough.
-</p>
-
-<br>
-
-<button class="primary" onclick="nextPage(6)">
-Next
-</button>
-
-</div>
-</div>
-
-<!-- PAGE 6 -->
-<div class="page" id="page6">
-<div class="card">
-
-<h1>It's Time...</h1>
-
-<p>
-Maybe it's finally time
-to let you go.
-</p>
-
-<br>
-
-<button class="primary" onclick="nextPage(7)">
-Open Letter
-</button>
-
-</div>
-</div>
-
-<!-- PAGE 7 -->
-<div class="page" id="page7">
-<div class="card">
-
-<h1>💌 Dear You</h1>
-
+<div class="page" id="p7"><div class="card">
+<h1>Dear You 💌</h1>
 <div class="letter">
-
-I loved you.<br><br>
-
-Maybe not perfectly,<br>
-maybe not forever,<br>
-but genuinely.<br><br>
-
-I imagined futures with you.<br>
-I imagined growing old with you.<br><br>
-
-But love isn't always about holding on.<br><br>
-
-Sometimes,<br>
-love means accepting
-that someone is no longer yours to keep.<br><br>
-
-Thank you for every memory.<br>
-Thank you for every smile.<br>
-Thank you for every lesson.<br><br>
-
-I will always cherish
-the chapter where you existed
-in my life.<br><br>
-
-Today,<br>
-I choose peace.<br><br>
-
-Today,<br>
-I choose to let you go.<br><br>
-
-Goodbye. ❤️
-
+<p>I loved you. Maybe not perfectly, maybe not forever, but genuinely.<br><br>
+Thank you for every memory, every smile, every lesson.<br><br>
+Love is not always about holding on. Sometimes love means accepting that someone is no longer yours to keep.<br><br>
+Today I choose peace. Today I choose to let you go.</p>
 </div>
+<button onclick="releaseHeart()">Release My Last Heart ❤️</button>
+</div></div>
 
-<br>
-
-<button class="primary" onclick="releaseHeart()">
-Release My Last Heart ❤️
-</button>
-
-</div>
-</div>
+<div class="page" id="p8"><div class="card fadeout"><div class="final">Some people become memories,<br>but that doesn't make them any less important.<br><br>I hope life is kind to you. ❤️</div></div></div>
 
 <script>
-
-function nextPage(page){
-
-document.querySelectorAll('.page').forEach(p=>{
-p.classList.remove('active');
-});
-
-document.getElementById('page'+page)
-.classList.add('active');
-
-confetti({
-particleCount:60,
-spread:70
-});
-
+const music=document.getElementById('bgMusic');
+function toggleMusic(){ if(music.paused) music.play(); else music.pause(); }
+function go(n){
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.getElementById('p'+n).classList.add('active');
 }
-
-const leaveBtn =
-document.getElementById('leaveBtn');
-
-leaveBtn.addEventListener('mouseover',()=>{
-
-let x =
-Math.random()*(window.innerWidth-150);
-
-let y =
-Math.random()*(window.innerHeight-100);
-
-leaveBtn.style.left=x+"px";
-leaveBtn.style.top=y+"px";
-
+function startJourney(){music.play().catch(()=>{});go(2);}
+document.getElementById('leaveBtn').addEventListener('mouseover',e=>{
+e.target.style.left=Math.random()*(window.innerWidth-150)+'px';
+e.target.style.top=Math.random()*(window.innerHeight-80)+'px';
 });
-
+const txt="Thank you for the memories. Thank you for the laughter. Thank you for being part of my life.";
+let i=0; setInterval(()=>{const el=document.getElementById('type'); if(el&&i<txt.length){el.textContent+=txt[i++];}},50);
 function releaseHeart(){
-
-let heart=document.createElement('div');
-
-heart.className='heart';
-
-heart.innerHTML='❤️';
-
-heart.style.left='50%';
-
-document.body.appendChild(heart);
-
-confetti({
-particleCount:200,
-spread:180,
-origin:{y:.7}
-});
-
-setTimeout(()=>{
-
-alert(
-"Thank you for everything.\n\nI hope life is kind to you."
-);
-
-},2500);
-
+let h=document.createElement('div'); h.className='heart'; h.textContent='❤️'; document.body.appendChild(h);
+// confetti removed
+setTimeout(()=>{go(8); h.remove();},6000);
 }
-
-function createPetal(){
-
-const petal=document.createElement('div');
-
-petal.className='petal';
-
-petal.innerHTML='🌸';
-
-petal.style.left=
-Math.random()*100+'vw';
-
-petal.style.animationDuration=
-(5+Math.random()*5)+'s';
-
-petal.style.fontSize=
-(15+Math.random()*15)+'px';
-
-document.body.appendChild(petal);
-
-setTimeout(()=>{
-petal.remove();
-},10000);
-
-}
-
-setInterval(createPetal,500);
-
+setInterval(()=>{
+let p=document.createElement('div');
+p.className='petal'; p.textContent='🌸';
+p.style.left=Math.random()*100+'vw';
+p.style.fontSize=(12+Math.random()*20)+'px';
+p.style.animationDuration=(5+Math.random()*5)+'s';
+document.body.appendChild(p);
+setTimeout(()=>p.remove(),10000);
+},400);
 </script>
-
 </body>
 </html>

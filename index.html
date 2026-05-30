@@ -13,10 +13,17 @@
 body{
   margin:0;
   background:linear-gradient(135deg,#dfffe2,#f0fff4,#e6fff0);
-  overflow:hidden
+  overflow:hidden;
 }
 
-.page{display:none;height:100vh;align-items:center;justify-content:center;padding:20px}
+.page{
+  display:none;
+  height:100vh;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
 .active{display:flex}
 
 .card{
@@ -27,7 +34,7 @@ body{
   padding:40px;
   border-radius:30px;
   text-align:center;
-  box-shadow:0 20px 40px rgba(120,200,150,.15)
+  box-shadow:0 20px 40px rgba(120,200,150,.15);
 }
 
 h1{color:#4caf7d}
@@ -50,11 +57,20 @@ button{
   background:#a8e6b1;
 }
 
-.music{position:fixed;top:15px;right:15px;z-index:1000}
+.music{
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:1000;
+}
 
 .letter{text-align:left;max-height:45vh;overflow:auto}
 
-.petal{position:fixed;top:-20px;animation:fall linear forwards}
+.petal{
+  position:fixed;
+  top:-20px;
+  animation:fall linear forwards;
+}
 
 @keyframes fall{
   to{transform:translateY(110vh) rotate(360deg)}
@@ -77,79 +93,184 @@ button{
 
 .fadeout{animation:fadeout 5s forwards}
 
-@keyframes fadeout{to{background:#000;color:#fff}}
+@keyframes fadeout{
+  to{background:#000;color:#fff}
+}
 
 .final{font-size:28px;color:white}
 </style>
 </head>
+
 <body>
 
+<!-- 🎵 Music Button -->
 <button class="music" onclick="toggleMusic()">🎵 Music</button>
 
-<audio id="bgMusic" loop>
-<source src="music/Maki-Saan.mp3" type="audio/mpeg">
-</audio>
+<!-- 🎧 YouTube Background Music (hidden) -->
+<div id="ytMusic">
+  <iframe
+    id="ytPlayer"
+    width="0"
+    height="0"
+    src=""
+    frameborder="0"
+    allow="autoplay">
+  </iframe>
+</div>
 
+<!-- PAGE 1 -->
 <div class="page active" id="p1">
-<div class="card">
-<h1>One Last Thing...</h1>
-<p>Before you leave, can you stay a little longer?</p>
-<button onclick="startJourney()">Stay</button>
-<button class="leave" id="leaveBtn">Leave</button>
+  <div class="card">
+    <h1>One Last Thing...</h1>
+    <p>Before you leave, can you stay a little longer?</p>
+    <button onclick="startJourney()">Stay</button>
+    <button class="leave" id="leaveBtn">Leave</button>
+  </div>
 </div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <div class="card">
+    <h1>You Stayed ❤️</h1>
+    <p>Thank you for staying a little longer.</p>
+    <button onclick="go(3)">Next</button>
+  </div>
 </div>
 
-<div class="page" id="p2"><div class="card"><h1>You Stayed ❤️</h1><p>Thank you for staying a little longer.</p><button onclick="go(3)">Next</button></div></div>
-
-<div class="page" id="p3"><div class="card"><h1>Things I Never Said</h1><p id="type"></p><button onclick="go(4)">Next</button></div></div>
-
-<div class="page" id="p4"><div class="card"><h1>If I Could Choose Again...</h1><p>☑ Meet you again<br>☑ Love you again<br>☑ Make memories again</p><button onclick="go(5)">Next</button></div></div>
-
-<div class="page" id="p5"><div class="card"><h1>Maybe...</h1><p>Some people stay forever. Some people become lessons.</p><button onclick="go(6)">Next</button></div></div>
-
-<div class="page" id="p6"><div class="card"><h1>It's Time</h1><p>Maybe it's finally time to let you go.</p><button onclick="go(7)">Open Letter</button></div></div>
-
-<div class="page" id="p7"><div class="card">
-<h1>Dear You 💌</h1>
-<div class="letter">
-<p>I loved you. Maybe not perfectly, maybe not forever, but genuinely.<br><br>
-Thank you for every memory, every smile, every lesson.<br><br>
-Love is not always about holding on. Sometimes love means accepting that someone is no longer yours to keep.<br><br>
-Today I choose peace. Today I choose to let you go.</p>
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <div class="card">
+    <h1>Things I Never Said</h1>
+    <p id="type"></p>
+    <button onclick="go(4)">Next</button>
+  </div>
 </div>
-<button onclick="releaseHeart()">Release My Last Heart ❤️</button>
-</div></div>
 
-<div class="page" id="p8"><div class="card fadeout"><div class="final">Some people become memories,<br>but that doesn't make them any less important.<br><br>I hope life is kind to you. ❤️</div></div></div>
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <div class="card">
+    <h1>If I Could Choose Again...</h1>
+    <p>☑ Meet you again<br>☑ Love you again<br>☑ Make memories again</p>
+    <button onclick="go(5)">Next</button>
+  </div>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+  <div class="card">
+    <h1>Maybe...</h1>
+    <p>Some people stay forever. Some people become lessons.</p>
+    <button onclick="go(6)">Next</button>
+  </div>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="p6">
+  <div class="card">
+    <h1>It's Time</h1>
+    <p>Maybe it's finally time to let you go.</p>
+    <button onclick="go(7)">Open Letter</button>
+  </div>
+</div>
+
+<!-- PAGE 7 -->
+<div class="page" id="p7">
+  <div class="card">
+    <h1>Dear Jeleen Ann 💌</h1>
+    <div class="letter">
+      <p>
+        I loved you. Maybe not perfectly, maybe not forever, but genuinely.<br><br>
+        Thank you for every memory, every smile, every lesson.<br><br>
+        Love is not always about holding on. Sometimes love means accepting that someone is no longer yours to keep.<br><br>
+        Today I choose peace. Today I choose to let you go.
+      </p>
+    </div>
+    <button onclick="releaseHeart()">Release My Last Heart ❤️</button>
+  </div>
+</div>
+
+<!-- PAGE 8 -->
+<div class="page" id="p8">
+  <div class="card fadeout">
+    <div class="final">
+      Some people become memories,<br>
+      but that doesn't make them any less important.<br><br>
+      I hope life is kind to you. ❤️
+    </div>
+  </div>
+</div>
 
 <script>
-const music=document.getElementById('bgMusic');
-function toggleMusic(){ if(music.paused) music.play(); else music.pause(); }
+const music = document.getElementById('ytPlayer');
+
+/* 🎧 Start YouTube music */
+function startMusic(){
+  music.src =
+    "https://www.youtube.com/embed/WW7EFEJUUlE?autoplay=1&loop=1&playlist=WW7EFEJUUlE";
+}
+
+/* 🎵 manual toggle (reload iframe trick) */
+function toggleMusic(){
+  if(music.src){
+    music.src = "";
+  } else {
+    startMusic();
+  }
+}
+
+/* 📄 page switch */
 function go(n){
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('p'+n).classList.add('active');
 }
-function startJourney(){music.play().catch(()=>{});go(2);}
-document.getElementById('leaveBtn').addEventListener('mouseover',e=>{
-e.target.style.left=Math.random()*(window.innerWidth-150)+'px';
-e.target.style.top=Math.random()*(window.innerHeight-80)+'px';
-});
-const txt="Thank you for the memories. Thank you for the laughter. Thank you for being part of my life.";
-let i=0; setInterval(()=>{const el=document.getElementById('type'); if(el&&i<txt.length){el.textContent+=txt[i++];}},50);
-function releaseHeart(){
-let h=document.createElement('div'); h.className='heart'; h.textContent='❤️'; document.body.appendChild(h);
-// confetti removed
-setTimeout(()=>{go(8); h.remove();},6000);
+
+/* ▶ start journey */
+function startJourney(){
+  startMusic();
+  go(2);
 }
+
+/* 💬 type text */
+const txt="Thank you for the memories. Thank you for the laughter. Thank you for being part of my life.";
+let i=0;
 setInterval(()=>{
-let p=document.createElement('div');
-p.className='petal'; p.textContent='🌸';
-p.style.left=Math.random()*100+'vw';
-p.style.fontSize=(12+Math.random()*20)+'px';
-p.style.animationDuration=(5+Math.random()*5)+'s';
-document.body.appendChild(p);
-setTimeout(()=>p.remove(),10000);
+  const el=document.getElementById('type');
+  if(el && i<txt.length){
+    el.textContent += txt[i++];
+  }
+},50);
+
+/* ❤️ heart animation */
+function releaseHeart(){
+  let h=document.createElement('div');
+  h.className='heart';
+  h.textContent='❤️';
+  document.body.appendChild(h);
+
+  setTimeout(()=>{
+    go(8);
+    h.remove();
+  },6000);
+}
+
+/* 🌸 floating petals */
+setInterval(()=>{
+  let p=document.createElement('div');
+  p.className='petal';
+  p.textContent='🌸';
+  p.style.left=Math.random()*100+'vw';
+  p.style.fontSize=(12+Math.random()*20)+'px';
+  p.style.animationDuration=(5+Math.random()*5)+'s';
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),10000);
 },400);
+
+/* 🚶 leave button dodge */
+document.getElementById('leaveBtn').addEventListener('mouseover',e=>{
+  e.target.style.left=Math.random()*(window.innerWidth-150)+'px';
+  e.target.style.top=Math.random()*(window.innerHeight-80)+'px';
+});
 </script>
+
 </body>
 </html>

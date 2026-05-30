@@ -14,18 +14,39 @@ body{
   margin:0;
   background:linear-gradient(135deg,#dfffe2,#f0fff4,#e6fff0);
   overflow:hidden;
+  position:relative;
 }
 
+/* 🌿 PAGE SLIDE SYSTEM */
 .page{
-  display:none;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
   height:100vh;
+
+  display:flex;
   align-items:center;
   justify-content:center;
   padding:20px;
+
+  opacity:0;
+  transform:translateX(100%);
+  transition:all 0.6s ease;
+  pointer-events:none;
 }
 
-.active{display:flex}
+.page.active{
+  opacity:1;
+  transform:translateX(0);
+  pointer-events:auto;
+}
 
+.page.left{
+  transform:translateX(-100%);
+}
+
+/* 🌿 CARD */
 .card{
   max-width:800px;
   width:95%;
@@ -66,6 +87,7 @@ button{
 
 .letter{text-align:left;max-height:45vh;overflow:auto}
 
+/* 🌸 PETALS */
 .petal{
   position:fixed;
   top:-20px;
@@ -76,6 +98,7 @@ button{
   to{transform:translateY(110vh) rotate(360deg)}
 }
 
+/* ❤️ HEART */
 .heart{
   position:fixed;
   left:50%;
@@ -91,6 +114,7 @@ button{
 100%{opacity:0;transform:translateX(-50%) translateY(-800px) scale(1.5)}
 }
 
+/* FINAL */
 .fadeout{animation:fadeout 5s forwards}
 
 @keyframes fadeout{
@@ -106,7 +130,7 @@ button{
 <!-- 🎵 Music Button -->
 <button class="music" onclick="toggleMusic()">🎵 Music</button>
 
-<!-- 🎧 YouTube Background Music (hidden) -->
+<!-- 🎧 YouTube Music -->
 <div id="ytMusic">
   <iframe
     id="ytPlayer"
@@ -133,6 +157,7 @@ button{
   <div class="card">
     <h1>You Stayed ❤️</h1>
     <p>Thank you for staying a little longer.</p>
+    <button onclick="back()">⬅ Back</button>
     <button onclick="go(3)">Next</button>
   </div>
 </div>
@@ -142,6 +167,7 @@ button{
   <div class="card">
     <h1>Things I Never Said</h1>
     <p id="type"></p>
+    <button onclick="back()">⬅ Back</button>
     <button onclick="go(4)">Next</button>
   </div>
 </div>
@@ -151,6 +177,7 @@ button{
   <div class="card">
     <h1>If I Could Choose Again...</h1>
     <p>☑ Meet you again<br>☑ Love you again<br>☑ Make memories again</p>
+    <button onclick="back()">⬅ Back</button>
     <button onclick="go(5)">Next</button>
   </div>
 </div>
@@ -160,6 +187,7 @@ button{
   <div class="card">
     <h1>Maybe...</h1>
     <p>Some people stay forever. Some people become lessons.</p>
+    <button onclick="back()">⬅ Back</button>
     <button onclick="go(6)">Next</button>
   </div>
 </div>
@@ -169,6 +197,7 @@ button{
   <div class="card">
     <h1>It's Time</h1>
     <p>Maybe it's finally time to let you go.</p>
+    <button onclick="back()">⬅ Back</button>
     <button onclick="go(7)">Open Letter</button>
   </div>
 </div>
@@ -185,6 +214,7 @@ button{
         Today I choose peace. Today I choose to let you go.
       </p>
     </div>
+    <button onclick="back()">⬅ Back</button>
     <button onclick="releaseHeart()">Release My Last Heart ❤️</button>
   </div>
 </div>
@@ -201,36 +231,63 @@ button{
 </div>
 
 <script>
-const music = document.getElementById('ytPlayer');
 
-/* 🎧 Start YouTube music */
+const music = document.getElementById('ytPlayer');
+let pageHistory = [1];
+
+/* 🎧 YouTube Music */
 function startMusic(){
   music.src =
     "https://www.youtube.com/embed/WW7EFEJUUlE?autoplay=1&loop=1&playlist=WW7EFEJUUlE";
 }
 
-/* 🎵 manual toggle (reload iframe trick) */
 function toggleMusic(){
   if(music.src){
     music.src = "";
-  } else {
+  }else{
     startMusic();
   }
 }
 
-/* 📄 page switch */
+/* 🌿 SLIDE NAVIGATION */
 function go(n){
-  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  const pages = document.querySelectorAll('.page');
+
+  pages.forEach(p => {
+    p.classList.remove('active','left');
+  });
+
+  const current = document.querySelector('.page.active');
+  if(current){
+    current.classList.add('left');
+  }
+
   document.getElementById('p'+n).classList.add('active');
+
+  pageHistory.push(n);
 }
 
-/* ▶ start journey */
+/* ⬅ BACK FUNCTION */
+function back(){
+  if(pageHistory.length > 1){
+    pageHistory.pop();
+    const prev = pageHistory[pageHistory.length - 1];
+
+    document.querySelectorAll('.page').forEach(p=>{
+      p.classList.remove('active','left');
+    });
+
+    document.getElementById('p'+prev).classList.add('active');
+  }
+}
+
+/* ▶ START */
 function startJourney(){
   startMusic();
   go(2);
 }
 
-/* 💬 type text */
+/* 💬 TYPE TEXT */
 const txt="Thank you for the memories. Thank you for the laughter. Thank you for being part of my life.";
 let i=0;
 setInterval(()=>{
@@ -240,7 +297,7 @@ setInterval(()=>{
   }
 },50);
 
-/* ❤️ heart animation */
+/* ❤️ HEART */
 function releaseHeart(){
   let h=document.createElement('div');
   h.className='heart';
@@ -253,7 +310,7 @@ function releaseHeart(){
   },6000);
 }
 
-/* 🌸 floating petals */
+/* 🌸 PETALS */
 setInterval(()=>{
   let p=document.createElement('div');
   p.className='petal';
@@ -265,11 +322,12 @@ setInterval(()=>{
   setTimeout(()=>p.remove(),10000);
 },400);
 
-/* 🚶 leave button dodge */
+/* 🚶 LEAVE BUTTON MOVE */
 document.getElementById('leaveBtn').addEventListener('mouseover',e=>{
   e.target.style.left=Math.random()*(window.innerWidth-150)+'px';
   e.target.style.top=Math.random()*(window.innerHeight-80)+'px';
 });
+
 </script>
 
 </body>
